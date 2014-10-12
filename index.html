@@ -70,6 +70,27 @@
 				});
 			}
 
+			function locationError (error) {
+				$("#map_canvas").gmap({'zoom':2});
+			}
+
+			function locationSuccess(position) {
+				var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+
+				$('#map_canvas').gmap({ 'center': new google.maps.LatLng(lat, lng), 'zoom': 5});
+			}
+
+			$(document).on("pagecreate", "#map", function()	{
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(
+							locationSuccess,
+							function() {},
+							{enableHighAccuracy: true}
+						);
+				}
+			});
+
 			$(document).on('pageshow','#list' , function() {
     			getPhotos();
 			});
@@ -103,7 +124,24 @@
 				</ul>
 			</div>
 			<div data-role="content">
-				<p>Mapa</p>
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="text" class="tag" name="tag">
+					</div>
+					<div class="ui-block-b">
+						<a href="javascript:getPhotos()"
+							data-role="button"
+							data-icon="check"
+							data-inline="true"
+							class="search-button"
+						>Buscar</a>						
+					</div>
+				</fieldset>
+				<div class="result-count"></div>
+				<br />
+				<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em">
+					<div id="map_canvas" style="height:350px"></div>
+				</div>
 			</div>
 		</div>
 
