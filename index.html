@@ -3,10 +3,17 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
 		<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
+
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.ui.map.js"></script>
+		<script type="text/javascript" src="js/jquery.ui.map.services.js"></script>
+		<script type="text/javascript" src="js/jquery.ui.map.extensions.js"></script>
 
 		<script type="text/javascript">
 			var instagram_client_id = "fc8041d4af1544a2939c3f5a9a1ef8cf";
@@ -16,7 +23,7 @@
 				var tag = $("#list .tag").val();
 				if (tag == "")
 				{
-					tag = "instafood"
+					tag = "puertodesantamaria"
 				}
 
 				tag = tag.replace(/(#| )/g,"");
@@ -35,7 +42,27 @@
 					var showing = 0;
 					$.each(data_elements, function(index, current_element) {
 						showing++;
+						var thumbnail = current_element["images"]["thumbnail"]["url"];
+						var caption = "ver imagen";
+
+						if (current_element["caption"] != null)
+						{
+							caption = current_element["caption"]["text"];
+						}
+
+						var link = current_element["link"];
+
+						// Inyectamos dos datos recibidos en la lista.
+						$("#element_list").append(
+							$("<li>").append(
+								$("<a>").attr("href", link).append(
+									$("<img>").attr("src", thumbnail)
+								).append(caption)
+							)
+						);
 					});
+
+					$("#element_list").listview("refresh");
 
 					$(".search-button").removeClass('ui-disabled');
 					$(".result-count").html("mostrando " + showing + " resultados para " + tag);
@@ -43,6 +70,14 @@
 				});
 			}
 
+			$(document).on('pageshow','#list' , function() {
+    			getPhotos();
+			});
+
+// Este método está deprecado desde la version 1.7
+//			$("#list").live("pageshow", function() {
+//				getPhotos();
+//			});
 
 			$(document).on('click', '[data-role="navbar"] a', 
 				function() {
@@ -62,7 +97,7 @@
 			</div>
 			<div data-role="navbar">
 				<ul>
-					<li><a href="#" data-href="#map" class="ui-btn-active">Mapa</a></li>
+					<li><a href="#" data-href="#map" class="ui-btn-active ui-state-persist">Mapa</a></li>
 					<li><a href="#" data-href="#list">Listado</a></li>
 					<li><a href="#" data-href="#upload">Mis fotos</a></li>
 				</ul>
@@ -79,7 +114,7 @@
 			<div data-role="navbar">
 				<ul>
 					<li><a href="#" data-href="#map">Mapa</a></li>
-					<li><a href="#" data-href="#list" class="ui-btn-active">Listado</a></li>
+					<li><a href="#" data-href="#list" class="ui-btn-active ui-state-persist">Listado</a></li>
 					<li><a href="#" data-href="#upload">Mis fotos</a></li>
 				</ul>
 			</div>
@@ -111,7 +146,7 @@
 				<ul>
 					<li><a href="#" data-href="#map">Mapa</a></li>
 					<li><a href="#" data-href="#list">Listado</a></li>
-					<li><a href="#" data-href="#upload" class="ui-btn-active">Mis fotos</a></li>
+					<li><a href="#" data-href="#upload" class="ui-btn-active ui-state-persist">Mis fotos</a></li>
 				</ul>
 			</div>
 			<div data-role="content">
