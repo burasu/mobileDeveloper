@@ -9,6 +9,41 @@
 		<script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
 
 		<script type="text/javascript">
+			var instagram_client_id = "fc8041d4af1544a2939c3f5a9a1ef8cf";
+
+			function getPhotos()
+			{
+				var tag = $("#list .tag").val();
+				if (tag == "")
+				{
+					tag = "instafood"
+				}
+
+				tag = tag.replace(/(#| )/g,"");
+
+				$(".search-button").addClass('ui-disabled');
+				$(".result-count").html("Cargando...");
+
+				$("#element_list").empty();
+
+				var url = "https://api.instagram.com/v1/tags/" + 
+				    tag + "/media/recent?client_id=" + 
+				    instagram_client_id + "&callback=?";
+
+				$.getJSON(url, function(data) {
+					var data_elements = data["data"];
+					var showing = 0;
+					$.each(data_elements, function(index, current_element) {
+						showing++;
+					});
+
+					$(".search-button").removeClass('ui-disabled');
+					$(".result-count").html("mostrando " + showing + " resultados para " + tag);
+
+				});
+			}
+
+
 			$(document).on('click', '[data-role="navbar"] a', 
 				function() {
 					$.mobile.changePage($(this).attr("data-href"), {
