@@ -1,18 +1,87 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
 
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).on('click', '[data-role="navbar"] a', 
+				function() {
+					$.mobile.changePage($(this).attr("data-href"), {
+						transition: "none",
+						changeHash: false
+					});
+				}
+			);
+		</script>
 	</head>
 
 	<body>
-		<div data-role="page">
+		<div id="map" data-role="page">
 			<div data-role="header">
-				<h1>Desarrollo Movil</h1>
+				<h1>Burasu.gram</h1>
+			</div>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" data-href="#map" class="ui-btn-active">Mapa</a></li>
+					<li><a href="#" data-href="#list">Listado</a></li>
+					<li><a href="#" data-href="#upload">Mis fotos</a></li>
+				</ul>
+			</div>
+			<div data-role="content">
+				<p>Mapa</p>
 			</div>
 		</div>
+
+		<div id="list" data-role="page">
+			<div data-role="header">
+				<h1>Burasu.gram</h1>
+			</div>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" data-href="#map">Mapa</a></li>
+					<li><a href="#" data-href="#list" class="ui-btn-active">Listado</a></li>
+					<li><a href="#" data-href="#upload">Mis fotos</a></li>
+				</ul>
+			</div>
+			<div data-role="content">
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="text" class="tag" name="tag">
+					</div>
+					<div class="ui-block-b">
+						<a href="javascript:getPhotos()"
+							data-role="button"
+							data-icon="check"
+							data-inline="true"
+							class="search-button"
+						>Buscar</a>						
+					</div>
+				</fieldset>
+				<div class="result-count"></div>
+				<br />
+				<ul data-role="listview" id="element_list"></ul>
+			</div>
+		</div>
+
+		<div id="upload" data-role="page">
+			<div data-role="header">
+				<h1>Burasu.gram</h1>
+			</div>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" data-href="#map">Mapa</a></li>
+					<li><a href="#" data-href="#list">Listado</a></li>
+					<li><a href="#" data-href="#upload" class="ui-btn-active">Mis fotos</a></li>
+				</ul>
+			</div>
+			<div data-role="content">
+				<p>Mis fotos</p>
+			</div>
+		</div>				
 	</body>
 </html>
